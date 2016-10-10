@@ -99,10 +99,11 @@ function play() {
 		return;
 	}
 
-	if (player.driver.src !== 'data:' && player.driver.src !== video.src) {
-		// console.log('src changed on play', video.src);
+	const src = video.src || video.currentSrc;
+	if (player.driver.src !== 'data:' && player.driver.src !== src) {
+		// console.log('src changed on play', src);
 		setTime(video, 0, true);
-		player.driver.src = video.src;
+		player.driver.src = src;
 	}
 
 	if (!video.paused) {
@@ -201,10 +202,11 @@ function addPlayer(video, hasAudio) {
 	video.addEventListener('emptied', () => {
 		// console.log('driver src is', player.driver.src);
 		const wasEmpty = !player.driver.src || player.driver.src === 'data:';
-		if (player.driver.src && player.driver.src !== video.src) {
-			// console.log('src changed to', video.src);
+		const src = video.src || video.currentSrc;
+		if (player.driver.src && player.driver.src !== src) {
+			// console.log('src changed to', src);
 			setTime(video, 0, true);
-			player.driver.src = video.src;
+			player.driver.src = src;
 			// playing videos will only keep playing if no src was present when .play()’ed
 			if (wasEmpty) {
 				player.driver.play();
